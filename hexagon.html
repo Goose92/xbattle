@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+    <title>Hex</title>
+    <script src="hexagon.js"></script>
+</head>
+<body>
+<canvas id="HexCanvas" width="1000" height="700"></canvas>
+<script>
+
+    const TailleGrilleRows=4;
+    const TailleGrilleCols=3;
+
+    var goose=12;
+    var Case = {
+        Niveau: 50,
+        Proprietaire:0,
+        Altitude:1,
+        HD: false,
+        H : false,
+        HG:false,
+        BG:false,
+        B:false,
+        BD:false
+    };
+
+    var TableauGrille = new Array(TailleGrilleRows);
+    for (var i = 0; i < TailleGrilleRows; i++)
+    {
+        TableauGrille[i] = new Array(TailleGrilleCols);
+        for (var j=0;j<TailleGrilleCols;j++)
+        {
+            TableauGrille[i][j] = Case;
+            TableauGrille[i][j].Niveau=Math.floor(Math.random() * 100);
+        }
+    }
+
+
+    var hexagonGrid = new HexagonGrid("HexCanvas", 50);
+
+    function principale(){
+        //setTimeout(principale,500); /* rappel après 2 secondes = 2000 millisecondes */
+        console.log("coucou !!!!");
+        for (var i = 0; i < TailleGrilleRows; i++)
+        {
+           // TableauGrille[i] = new Array(TailleGrilleCols);
+            for (var j=0;j<TailleGrilleCols;j++)
+            {
+                   // TableauGrille[i][j] = Math.floor(Math.random() * 100);
+
+                if (TableauGrille[i][j].Niveau>=100){
+                    TableauGrille[i][j].Niveau = Math.floor(Math.random() * 100);
+                }
+                else {
+                    TableauGrille[i][j].Niveau = TableauGrille[i][j].Niveau + 1;
+                }
+
+            }
+        }
+        hexagonGrid.drawHexGrid(TableauGrille,TailleGrilleRows, TailleGrilleCols, 20, 20);
+    }
+
+    principale();
+</script>
+
+</body>
+
