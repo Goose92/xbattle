@@ -13,13 +13,12 @@ function HexagonGrid(canvasId, radius) {
 
     this.canvasOriginX = 0;
     this.canvasOriginY = 0;
-    console.log("titi : ", TableauGrille[0][0]);
 
     this.canvas.addEventListener("mousedown", this.clickEvent.bind(this), false);
 };
 
 // Fonction de dessin de la grille complète
-HexagonGrid.prototype.affichageCasesGrille = function (rows, cols, originX, originY) {
+HexagonGrid.prototype.affichageCasesGrille = function ( rows,cols, originX, originY) {
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
 
@@ -40,6 +39,66 @@ HexagonGrid.prototype.affichageCasesGrille = function (rows, cols, originX, orig
                 currentHexY = (row * this.height) + originY + (this.height * 0.5);
             }
             this.drawHex(currentHexX, currentHexY, "#ddd", debugText);
+        }
+        offsetColumn = !offsetColumn;
+    }
+};
+
+
+HexagonGrid.prototype.affichageCase = function ( i,j, originX, originY) {
+    this.canvasOriginX = originX;
+    this.canvasOriginY = originY;
+
+    var currentHexX;
+    var currentHexY;
+    var debugText = "";
+
+    var offsetColumn = false;
+    console.log(TailleGrilleCols,TailleGrilleRows);
+    for (var col = 0; col<TailleGrilleCols ; col++) {
+        for (var row = 0; row<TailleGrilleRows ; row++) {
+            //console.log("toto :",col,row);
+            if (!offsetColumn) {
+                currentHexX = (col * this.side) + originX;
+                currentHexY = (row * this.height) + originY;
+            } else {
+                currentHexX = col * this.side + originX;
+                currentHexY = (row * this.height) + originY + (this.height * 0.5);
+            }
+            if (row==j && col==i){
+                this.drawHex(currentHexX, currentHexY, "#ddd", debugText);
+
+            }
+
+        }
+        offsetColumn = !offsetColumn;
+    }
+};
+
+HexagonGrid.prototype.affichageNiveauCase = function ( i,j, originX, originY) {
+    this.canvasOriginX = originX;
+    this.canvasOriginY = originY;
+
+    var currentHexX;
+    var currentHexY;
+    var debugText = "";
+
+    var offsetColumn = false;
+
+    for (var col = 0; col<TailleGrilleCols ; col++) {
+        for (var row = 0; row<TailleGrilleRows ; row++) {
+            console.log("goose****",j,i);
+            if (!offsetColumn) {
+                currentHexX = (col * this.side) + originX;
+                currentHexY = (row * this.height) + originY;
+            } else {
+                currentHexX = col * this.side + originX;
+                currentHexY = (row * this.height) + originY + (this.height * 0.5);
+            }
+            if (row==j && col==i){
+                this.drawCercle(currentHexX+this.width/2,currentHexY+this.height/2,NiveauMax*TableauGrille[col][row].Niveau/100,"rgba(150,150,150,0.3)","");
+
+            }
         }
         offsetColumn = !offsetColumn;
     }
