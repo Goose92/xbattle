@@ -13,14 +13,13 @@ function HexagonGrid(canvasId, radius) {
 
     this.canvasOriginX = 0;
     this.canvasOriginY = 0;
-    console.log(goose);
     console.log("titi : ", TableauGrille[0][0]);
 
     this.canvas.addEventListener("mousedown", this.clickEvent.bind(this), false);
 };
 
 // Fonction de dessin de la grille complète
-HexagonGrid.prototype.drawHexGrid = function (TableauGrille,rows, cols, originX, originY) {
+HexagonGrid.prototype.affichageCasesGrille = function (rows, cols, originX, originY) {
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
 
@@ -41,6 +40,32 @@ HexagonGrid.prototype.drawHexGrid = function (TableauGrille,rows, cols, originX,
                 currentHexY = (row * this.height) + originY + (this.height * 0.5);
             }
             this.drawHex(currentHexX, currentHexY, "#ddd", debugText);
+        }
+        offsetColumn = !offsetColumn;
+    }
+};
+
+HexagonGrid.prototype.affichageNiveauGrille = function (rows, cols, originX, originY) {
+    this.canvasOriginX = originX;
+    this.canvasOriginY = originY;
+
+    var currentHexX;
+    var currentHexY;
+    var debugText = "";
+
+    var offsetColumn = false;
+
+    for (var col = 0; col < cols; col++) {
+        for (var row = 0; row < rows; row++) {
+
+            if (!offsetColumn) {
+                currentHexX = (col * this.side) + originX;
+                currentHexY = (row * this.height) + originY;
+            } else {
+                currentHexX = col * this.side + originX;
+                currentHexY = (row * this.height) + originY + (this.height * 0.5);
+            }
+            this.drawCercle(currentHexX+this.width/2,currentHexY+this.height/2,NiveauMax*TableauGrille[row][col].Niveau/100,"rgba(150,150,150,0.3)","");
         }
         offsetColumn = !offsetColumn;
     }
@@ -194,11 +219,11 @@ HexagonGrid.prototype.clickEvent = function (e) {
     if (tile.column >= 0 && tile.row >= 0) {
         var drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
         var drawx = (tile.column * this.side) + this.canvasOriginX;
-        //this.drawHex(drawx, drawy - 6, "rgba(110,110,230,0.3)", "");
+        //this.drawHex(drawx, drawy - 6, "rgba(110,110,230,0.3)", ""); // Pour accroitre la couleur de la case choisie
     }
 
     Angle=angle(drawx+this.width/2,drawy+this.height/2-6,mouseX-10,mouseY-10);
-    this.drawCercle(drawx+this.width/2,drawy+this.height/2-6,20,"rgba(150,150,150,0.3)","");
+    this.drawCercle(drawx+this.width/2,drawy+this.height/2-6,NiveauMax,"rgba(150,150,150,0.3)","");
     console.log(tile.column,tile.row);
 
     switch (true) {

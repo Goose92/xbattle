@@ -7,10 +7,10 @@
 <canvas id="HexCanvas" width="1000" height="700"></canvas>
 <script>
 
-    const TailleGrilleRows=4;
-    const TailleGrilleCols=3;
+    const TailleGrilleRows=2;
+    const TailleGrilleCols=2;
+    const NiveauMax=30;
 
-    var goose=12;
     var Case = {
         Niveau: 50,
         Proprietaire:0,
@@ -23,42 +23,50 @@
         BD:false
     };
 
+    // Initialisation du tableau du jeu
     var TableauGrille = new Array(TailleGrilleRows);
     for (var i = 0; i < TailleGrilleRows; i++)
     {
         TableauGrille[i] = new Array(TailleGrilleCols);
         for (var j=0;j<TailleGrilleCols;j++)
         {
+            var Case = new Object();
+            Case.Niveau = Math.floor(Math.random() * 100);
+            Case.Proprietaire = 0;
+            Case.Altitude=1;
+            Case.HD =false;
+            Case.H = false;
+            Case.HG=false;
+            Case.BG=false;
+            Case.B=false;
+            Case.BD=false;
+
             TableauGrille[i][j] = Case;
             TableauGrille[i][j].Niveau=Math.floor(Math.random() * 100);
         }
     }
 
-
     var hexagonGrid = new HexagonGrid("HexCanvas", 50);
+    hexagonGrid.affichageCasesGrille(TailleGrilleRows, TailleGrilleCols, 20, 20);
 
     function principale(){
-        //setTimeout(principale,500); /* rappel après 2 secondes = 2000 millisecondes */
-        console.log("coucou !!!!");
+        setTimeout(principale,100); /* rappel après 2 secondes = 2000 millisecondes */
         for (var i = 0; i < TailleGrilleRows; i++)
         {
-           // TableauGrille[i] = new Array(TailleGrilleCols);
             for (var j=0;j<TailleGrilleCols;j++)
             {
-                   // TableauGrille[i][j] = Math.floor(Math.random() * 100);
-
-                if (TableauGrille[i][j].Niveau>=100){
+                if ( TableauGrille[i][j].Niveau >=100 ){
                     TableauGrille[i][j].Niveau = Math.floor(Math.random() * 100);
                 }
                 else {
                     TableauGrille[i][j].Niveau = TableauGrille[i][j].Niveau + 1;
                 }
-
             }
         }
-        hexagonGrid.drawHexGrid(TableauGrille,TailleGrilleRows, TailleGrilleCols, 20, 20);
-    }
+        hexagonGrid.affichageCasesGrille(TailleGrilleRows, TailleGrilleCols, 20, 20);
+        hexagonGrid.affichageNiveauGrille(TailleGrilleRows, TailleGrilleCols, 20, 20);
 
+    }
     principale();
 </script>
 
