@@ -54,7 +54,7 @@ HexagonGrid.prototype.affichageCase = function ( i,j, originX, originY) {
     var debugText = "";
 
     var offsetColumn = false;
-    console.log(TailleGrilleCols,TailleGrilleRows);
+    //console.log(TailleGrilleCols,TailleGrilleRows);
     for (var col = 0; col<TailleGrilleCols ; col++) {
         for (var row = 0; row<TailleGrilleRows ; row++) {
             //console.log("toto :",col,row);
@@ -87,7 +87,7 @@ HexagonGrid.prototype.affichageNiveauCase = function ( i,j, originX, originY) {
 
     for (var col = 0; col<TailleGrilleCols ; col++) {
         for (var row = 0; row<TailleGrilleRows ; row++) {
-            console.log("goose****",j,i);
+
             if (!offsetColumn) {
                 currentHexX = (col * this.side) + originX;
                 currentHexY = (row * this.height) + originY;
@@ -97,6 +97,53 @@ HexagonGrid.prototype.affichageNiveauCase = function ( i,j, originX, originY) {
             }
             if (row==j && col==i){
                 this.drawCercle(currentHexX+this.width/2,currentHexY+this.height/2,NiveauMax*TableauGrille[col][row].Niveau/100,"rgba(150,150,150,0.3)","");
+
+            }
+        }
+        offsetColumn = !offsetColumn;
+    }
+};
+
+HexagonGrid.prototype.affichageValveCase = function ( i,j, originX, originY) {
+    this.canvasOriginX = originX;
+    this.canvasOriginY = originY;
+
+    var currentHexX;
+    var currentHexY;
+    var debugText = "";
+    var offsetColumn = false;
+
+    for (var col = 0; col<TailleGrilleCols ; col++) {
+        for (var row = 0; row<TailleGrilleRows ; row++) {
+            //console.log("goose!!!****",j,i);
+            if (!offsetColumn) {
+                currentHexX = (col * this.side) + originX;
+                currentHexY = (row * this.height) + originY;
+            } else {
+                currentHexX = col * this.side + originX;
+                currentHexY = (row * this.height) + originY + (this.height * 0.5);
+            }
+            if (row==j && col==i){
+                for (var nb=0;nb<=6;nb++){
+                    if (TableauGrille[col][row].BD==true){
+                        this.drawValve(currentHexX+this.width/2,currentHexY+this.height/2, "#000", "BD", false);
+                    }
+                    if (TableauGrille[col][row].B==true){
+                        this.drawValve(currentHexX+this.width/2,currentHexY+this.height/2, "#000", "B", false);
+                    }
+                    if (TableauGrille[col][row].BG==true){
+                        this.drawValve(currentHexX+this.width/2,currentHexY+this.height/2, "#000", "BG", false);
+                    }
+                    if (TableauGrille[col][row].HD==true){
+                        this.drawValve(currentHexX+this.width/2,currentHexY+this.height/2, "#000", "HD", false);
+                    }
+                    if (TableauGrille[col][row].H==true){
+                        this.drawValve(currentHexX+this.width/2,currentHexY+this.height/2, "#000", "H", false);
+                    }
+                    if (TableauGrille[col][row].HG==true){
+                        this.drawValve(currentHexX+this.width/2,currentHexY+this.height/2, "#000", "HG", false);
+                    }
+                }
 
             }
         }
@@ -282,33 +329,46 @@ HexagonGrid.prototype.clickEvent = function (e) {
     }
 
     Angle=angle(drawx+this.width/2,drawy+this.height/2-6,mouseX-10,mouseY-10);
-    this.drawCercle(drawx+this.width/2,drawy+this.height/2-6,NiveauMax,"rgba(150,150,150,0.3)","");
-    console.log(tile.column,tile.row);
+    //this.drawCercle(drawx+this.width/2,drawy+this.height/2-6,NiveauMax,"rgba(150,150,150,0.3)","");
+    console.log("tile:",tile.column,tile.row);
 
     switch (true) {
         case (Angle>=0 && Angle<60) : console.log("en bas à droite");
-            //this.drawTriangle(drawx,drawy-6,"rgba(150,150,150,0.3)","BD","");
-            this.drawValve(drawx+this.width/2,drawy+this.height/2-6, "#000", "BD", false);
+            TableauGrille[tile.column][tile.row].BD=!TableauGrille[tile.column][tile.row].BD;
+            if (tile.column+1<TailleGrilleCols && tile.row+1<TailleGrilleRows){
+                TableauGrille[tile.column+1][tile.row+1].HG=TableauGrille[tile.column][tile.row].BD;
+            }
             break;
-        case (Angle>=60 && Angle<120) : console.log("en bas ");
-            //this.drawTriangle(drawx,drawy-6,"rgba(150,150,150,0.3)","B","");
-            this.drawValve(drawx+this.width/2,drawy+this.height/2-6, "#000", "B", false);
+        case (Angle>=60 && Angle<120) : console.log("en bas ",tile.column,tile.row);
+            TableauGrille[tile.column][tile.row].B=!TableauGrille[tile.column][tile.row].B;
+            if (tile.row+1<TailleGrilleRows){
+                TableauGrille[tile.column][tile.row+1].H=TableauGrille[tile.column][tile.row].B;
+            }
             break;
         case (Angle>=120 ) : console.log("en bas à gauche");
-            //this.drawTriangle(drawx,drawy-6,"rgba(150,150,150,0.3)","BG","");
-            this.drawValve(drawx+this.width/2,drawy+this.height/2-6, "#000", "BG", false);
+            TableauGrille[tile.column][tile.row].BG=!TableauGrille[tile.column][tile.row].BG;
+            if (tile.column-1>=0 && tile.row+1<TailleGrilleRows){
+                TableauGrille[tile.column-1][tile.row+1].HD=TableauGrille[tile.column][tile.row].BG;
+            }
             break;
         case (Angle<0 && Angle>=-60) : console.log("en haut à droite");
-            //this.drawTriangle(drawx,drawy-6,"rgba(150,150,150,0.3)","HD","");
-            this.drawValve(drawx+this.width/2,drawy+this.height/2-6, "#000", "HD", false);
+            TableauGrille[tile.column][tile.row].HD=!TableauGrille[tile.column][tile.row].HD;
+            if (tile.column+1<TailleGrilleRows){
+                TableauGrille[tile.column+1][tile.row].BG=TableauGrille[tile.column][tile.row].HD;
+            }
             break;
         case (Angle<-60 && Angle>=-120) : console.log("en haut ");
-            //this.drawTriangle(drawx,drawy-6,"rgba(150,150,150,0.3)","H","");
-            this.drawValve(drawx+this.width/2,drawy+this.height/2-6, "#000", "H", false);
+            TableauGrille[tile.column][tile.row].H=!TableauGrille[tile.column][tile.row].H;
+            if (tile.row-1>=0){
+                TableauGrille[tile.column][tile.row-1].B=TableauGrille[tile.column][tile.row].H;
+            }
             break;
         case (Angle<-120 ) : console.log("en haut à gauche");
-            //this.drawTriangle(drawx,drawy-6,"rgba(150,150,150,0.3)","HG","");
-            this.drawValve(drawx+this.width/2,drawy+this.height/2-6, "#000", "HG", false);
+            TableauGrille[tile.column][tile.row].HG=!TableauGrille[tile.column][tile.row].HG;
+            if (tile.row-1>=0 && tile.column-1>=0){
+                TableauGrille[tile.column-1][tile.row].BD=TableauGrille[tile.column][tile.row].HG;
+            }
+
             break;
         default : break;
     };

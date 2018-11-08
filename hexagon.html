@@ -7,7 +7,7 @@
 <canvas id="HexCanvas" width="1000" height="700"></canvas>
 <script>
 
-    const TailleGrilleRows=2;
+    const TailleGrilleRows=3;
     const TailleGrilleCols=3;
     const NiveauMax=30;
 
@@ -17,7 +17,7 @@
         Altitude:1,
         HD: false,
         H : false,
-        HG:false,
+        HG:true,
         BG:false,
         B:false,
         BD:false
@@ -34,12 +34,12 @@
             Case.Niveau = Math.floor(Math.random() * 100);
             Case.Proprietaire = 0;
             Case.Altitude=1;
-            Case.HD =false;
-            Case.H = false;
-            Case.HG=false;
-            Case.BG=false;
-            Case.B=false;
-            Case.BD=false;
+            Case.HD =true;
+            Case.H = true;
+            Case.HG=true;
+            Case.BG=true;
+            Case.B=true;
+            Case.BD=true;
 
             TableauGrille[i][j] = Case;
             TableauGrille[i][j].Niveau=Math.floor(Math.random() * 100);
@@ -47,32 +47,31 @@
     }
 
     var hexagonGrid = new HexagonGrid("HexCanvas", 50);
-    //hexagonGrid.affichageCasesGrille(TailleGrilleRows, TailleGrilleCols, 20, 20);
+    hexagonGrid.affichageCasesGrille(TailleGrilleRows, TailleGrilleCols, 20, 20);
 
     function principale(){
         setTimeout(principale,100); /* rappel après 2 secondes = 2000 millisecondes */
         for (var i = 0; i < TailleGrilleCols; i++)
         {
-            console.log
             for (var j=0;j<TailleGrilleRows;j++)
             {
-                console.log("goose ::::",i,j);
+                //console.log("analyse",i,j);
                 if ( TableauGrille[i][j].Niveau >=100 ){
                     TableauGrille[i][j].Niveau = Math.floor(Math.random() * 100);
                     hexagonGrid.affichageCase(i,j, 20,20);
                     hexagonGrid.affichageNiveauCase(i,j, 20, 20);
+                    hexagonGrid.affichageValveCase(i,j, 20, 20);
                 }
                 else {
                     TableauGrille[i][j].Niveau = TableauGrille[i][j].Niveau + 1;
                     hexagonGrid.affichageCase(i,j, 20,20);
                     hexagonGrid.affichageNiveauCase(i,j, 20, 20);
+                    hexagonGrid.affichageValveCase(i,j, 20, 20);
                 }
             }
         }
         //hexagonGrid.affichageCasesGrille(TailleGrilleRows, TailleGrilleCols, 20, 20);
         //hexagonGrid.affichageNiveauGrille( TailleGrilleRows, TailleGrilleCols,20, 20);
-
-
     }
     principale();
 </script>
